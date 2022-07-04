@@ -1,0 +1,30 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<h3>Local Library Home</h3>
+<p>Welcome to <b>LocalLibrary</b> i.e. 127.0.0.1:8000</p>
+<h3>Dynamic content</h3>
+
+{% comment %} <p>The library has the following record counts:</p>
+<ul>
+  <li><strong>Books:</strong> {{ num_books }}</li>
+  <li><strong>Copies:</strong> {{ num_instances }}</li>
+  <li><strong>Copies available:</strong> {{ num_instances_available }}</li>
+  <li><strong>Authors:</strong> {{ num_authors }}</li>
+  <li><b>ANIME:</b> {{ string_version1 }} </li>
+  <li><b>Session:</b> {{ num_visits }}</li>
+</ul> {% endcomment %}
+
+<p>The library has the following record counts:</p>
+<ol>
+  <li><strong>Books:</strong> {{ num_books }}</li>
+  <li><strong>Copies:</strong> {{ num_instances }}</li>
+  <li><strong>Copies available:</strong> {{ num_instances_available }}</li>
+  <li><strong>Authors:</strong> {{ num_authors }}</li>
+  <li><b>ANIME:</b> {{ string_version1 }} </li>
+  <li><b>Session:</b> {{ num_visits }}</li>
+</ol>
+<p>You have visited this page {{ num_visits }}{% if num_visits == 1 %} time{% else %} times{% endif %}.</p>
+{% endblock %}
+
+

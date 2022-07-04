@@ -1,0 +1,43 @@
+{% extends "base_generic.html" %}
+{% block content %}
+
+    <h1>Renew: {{bookinst.book.title}}</h1>
+    <p>Borrower: {{bookinst.borrower}}</p>
+    <p {% if bookinst.is_overdue %}
+       class="text-danger"
+       {% endif %}>Due date: {{bookinst.due_back}}</p>
+
+    <form class="form" action="" method="post">
+        {% comment %} 
+        Блок {% csrf_token %}, добавленный первой строкой внутри блока формы, 
+        является частью фреймворка Django и служит для борьбы с CSRF. 
+        {% endcomment %}
+        {% csrf_token %}
+        <table>
+            {% comment %} {{ form }} {% endcomment %}
+            <tr>
+                <th>
+                    <label for="id_renewal_date">Renewal date:</label>
+                </th>
+            </tr>
+            <tr>
+                <td>
+                    <ul class="errorlist">
+                      <li>Invalid date - renewal in past</li>
+                    </ul>
+                    <input class="form-control" id="id_renewal_date" name="renewal_date" type="text" value="04.07.2022" required />
+                    {% comment %} <br /> {% endcomment %}
+                    <span class="helptext">Enter date between now and 4 weeks (default 3 weeks).</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input class="form-control" type="submit" value="Submit" />
+                </td>
+            </tr>
+
+        </table>
+        
+    </form>
+
+{% endblock %}
