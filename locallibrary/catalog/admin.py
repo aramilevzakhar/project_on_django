@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Author, Genre, Book, BookInstance, ClassV1
+from .models import Author, Genre, Book, BookInstance, Language
 
 # Register your models here.
 
@@ -20,14 +20,18 @@ class AuthorAdmin(admin.ModelAdmin):
 admin.site.register(Author, AuthorAdmin)
 
 
-@admin.register(ClassV1)
-class ClassV1(admin.ModelAdmin):
-    list_display = ('p1', 'p2', 'p3', 'p4')
+# @admin.register(ClassV1)
+# class ClassV1(admin.ModelAdmin):
+#     list_display = ('p1', 'p2', 'p3', 'p4')
 
+@admin.register(Language)
+class LanguageAdmin(admin.ModelAdmin):
+    list_display = ('name', )
 
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
     list_display = ('title', 'author', 'display_genre')
+    list_filter = ('title', 'author')
 
 # Добавили поле borrower
 # Это сделает поле видимым в разделе Admin, так что мы можем при необходимости назначить User в BookInstance.

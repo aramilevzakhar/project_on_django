@@ -1,7 +1,7 @@
 import re
 from telnetlib import LOGOUT
 from django.shortcuts import render
-from .models import Book, Author, BookInstance, Genre, ClassV1
+from .models import Book, Author, BookInstance, Genre, Language
 from django.views import generic
 from django.contrib.auth.decorators import login_required
 # Create your views here.
@@ -38,7 +38,7 @@ def index(request):
     # Доступные книги (статус = 'a')
     num_instances_available = BookInstance.objects.filter(status__exact='a').count()
     num_authors = Author.objects.count()  # Метод 'all()' применён по умолчанию.
-    num_v = ClassV1.objects.count()
+    # num_v = ClassV1.objects.count()
 
     #del request.session['num_visits'] # удаляем значение из сессии
     num_visits = request.session.get('num_visits', 0) # если значения нет, то вернётся значение поумолчанию, т.е. 0
@@ -57,7 +57,6 @@ def index(request):
       'num_instances': num_instances,
       'num_instances_available': num_instances_available,
       'num_authors': num_authors,
-      'string_version1': num_v,
       'num_visits': num_visits
     }
     return render(request, 'index.html', context)
@@ -93,6 +92,8 @@ class BookListView(LoginRequiredMixin, generic.ListView):
         return context
 
 
+
+    
 class BookDetailView(LoginRequiredMixin, generic.DetailView):
     model = Book
 
@@ -202,7 +203,7 @@ class BookCreate(LoginRequiredMixin, CreateView):
     model = Book
     # permission_required = ('catalog.can_mark_returned',)
     # fields = '__all__'
-    fields = ['author', 'title', 'summary', 'isbn', 'genre']
+    fields = ['author', 'title', 'summary', 'isbn', 'genre', 'language']
     template_name_suffix = '_forma4ka'
     # initial={'date_of_death':'12/10/2016',}
     

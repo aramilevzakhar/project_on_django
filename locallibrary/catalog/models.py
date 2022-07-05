@@ -1,4 +1,5 @@
 from pyexpat import model
+from tabnanny import verbose
 from django.db import models
 from django.urls import reverse  # Used to generate URLs by reversing the URL patterns
 import uuid  # Required for unique book instances
@@ -12,7 +13,7 @@ class Genre(models.Model):
     """
     Model representing a book genre (e.g. Science Fiction, Non Fiction).
     """
-    name = models.CharField(max_length=200, help_text="Enter a book genre (e.g. Science Fiction, French Poetry etc.)")
+    name = models.CharField(verbose_name="Название жанра", max_length=200, help_text="(This is help_text a field) Enter a book genre (e.g. Science Fiction, French Poetry etc.)")
 
     def __str__(self):
         """
@@ -32,8 +33,10 @@ class Book(models.Model):
     summary = models.TextField('Резюме', max_length=1000, help_text="Enter a brief description of the book")
     isbn = models.CharField('ISBN', max_length=13,
                             help_text='13 Character <a href="https://www.isbn-international.org/content/what-isbn">ISBN number</a>')
-    genre = models.ManyToManyField(Genre, help_text="Select a genre for this book")
-
+    genre = models.ManyToManyField(Genre, verbose_name="Genre(Жанр)", help_text="Select a genre for this book")
+    
+    # language = models.ManyToManyField(verbose_name='Язык', to='Language')
+    language = models.ForeignKey(verbose_name='Язык', on_delete=models.SET_NULL, to='Language', null=True, blank=True)
     # ManyToManyField used because genre can contain many books. Books can cover many genres.
     # Genre class has already been defined so we can specify the object above.
 
@@ -81,6 +84,8 @@ class BookInstance(models.Model):
     LOAN_STATUS = ( ('m', 'Maintenance'), ('o', 'On loan'), ('a', 'Available'), ('r', 'Reserved'), )
     status = models.CharField(max_length=1, choices=LOAN_STATUS, blank=True, default='m', help_text='Book availability')
 
+    
+
     @property
     def is_overdue(self):
         if self.due_back and date.today() > self.due_back:
@@ -91,6 +96,7 @@ class BookInstance(models.Model):
     class Meta:
         ordering = ["due_back"]
         permissions = (("can_mark_returned", "Set book as returned"),)
+        verbose_name = "Экзэмляры книжечек"
 
     def __str__(self):
         """
@@ -99,19 +105,21 @@ class BookInstance(models.Model):
         return '%s (%s)' % (self.id, self.book.title)
 
 
-class ClassV1(models.Model):
-    p1 = models.CharField(verbose_name='s22', max_length=100)
-    p2 = models.CharField(verbose_name='S22', max_length=100)
-    p3 = models.DateField(verbose_name='s33', max_length=100)
-    p4 = models.DateField(verbose_name='s44', max_length=100)
-    def __eq__():
-        return 3
-    def __str__(self):
-        """
-        String for representing the Model object.
-        """
-        return '%s, %s, %s, %s' % (self.p1, self.p2, self.p3, self.p4)
-print(ClassV1 == 3)
+# class ClassV1(models.Model):
+#     p1 = models.CharField(verbose_name='s22', max_length=100)
+#     p2 = models.CharField(verbose_name='S22', max_length=100)
+#     p3 = models.DateField(verbose_name='s33', max_length=100)
+#     p4 = models.DateField(verbose_name='s44', max_length=100)
+#     def __eq__():
+#         return 3
+#     def __str__(self):
+#         """
+#         String for representing the Model object.
+#         """
+#         return '%s, %s, %s, %s' % (self.p1, self.p2, self.p3, self.p4)
+#     class Meta:
+#         verbose_name = "Anime"
+# print(ClassV1 == 3)
 
 class Author(models.Model):
     """
